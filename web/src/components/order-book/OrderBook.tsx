@@ -1,0 +1,23 @@
+import React, {FC} from "react";
+import {OrderBookM} from "../../model/Trading";
+import Orders from "./Orders";
+import {Paper, TableContainer} from "@mui/material";
+
+type OrderBookProps = OrderBookM & {
+    currency: string;
+};
+
+const OrderBook: FC<OrderBookProps> = (props) => {
+    const {asks, bids, currency} = props;
+
+    // price * amount, total
+    return (
+        <TableContainer component={Paper}>
+            <Orders type={'bid'} orders={bids} currency={currency}/>
+
+            <Orders type={'ask'} orders={asks} currency={currency}/>
+        </TableContainer>
+    );
+}
+
+export default OrderBook
