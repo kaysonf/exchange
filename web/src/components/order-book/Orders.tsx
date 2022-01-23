@@ -1,6 +1,6 @@
 import React, {FC} from "react";
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
-import {Order} from "../../model/Trading";
+import {Order} from "../../../../domain/models/Trading";
 
 type OrdersProps = {
     type: 'ask' | 'bid';

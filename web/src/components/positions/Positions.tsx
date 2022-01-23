@@ -1,5 +1,5 @@
 import {FC} from "react";
-import {PositionM} from "../../model/Trading";
+import {PositionM} from "../../../../domain/models/Trading";
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 
 type PositionsProps = {

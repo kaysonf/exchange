@@ -1,41 +1,48 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import OrderBook from "./components/order-book/OrderBook";
-import {OrderBookM, PositionM} from "./model/Trading";
 import Positions from "./components/positions/Positions";
+import {usePositionsApi} from "./API";
+
+import io from 'socket.io-client';
+import {useMarketWs, useOrderBookWS} from "./WebSocket";
+
+const socket = io('http://localhost:5000');
 
 function App() {
 
-    const orderBookData: OrderBookM = {
-        asks: [
-            {price: 1, volume: 2},
-            {price: 3, volume: 4},
-            {price: 5, volume: 6},
-        ],
+    const {status: orderBookConnection, message: orderBook} = useOrderBookWS(socket);
 
-        bids: [
-            {price: 1, volume: 2},
-            {price: 3, volume: 4},
-            {price: 5, volume: 6},
-        ],
+    const {status: marketConnection, message: market} = useMarketWs(socket); // chart
 
-        timestamp: 123
-    };
+    const [{loading: loadingPositions, data: positions}, getPositions] = usePositionsApi();
 
-    const positions: PositionM[] = [
-        {pair: ['ETH', 'BTC'], priceAcquired: 1, quantity: 5},
-        {pair: ['ETH', 'USD'], priceAcquired: 1, quantity: 5},
-        {pair: ['ETH', 'CRO'], priceAcquired: 1, quantity: 5},
-    ];
+    useEffect(() => {
+
+        (async () => {
+            await getPositions();
+        })();
+
+    }, [getPositions]);
 
     const currency = 'ETH';
 
-    const currentPrice = 5;
+    const currentPrice = market?.lastTradedPrice;
 
     return (
         <div className="App">
-            <Positions positions={positions} currentPrice={currentPrice}/>
-            <OrderBook {...orderBookData} currency={currency}/>
+            {loadingPositions ?
+                <>loading positions</>
+                :
+                positions !== null && currentPrice && <Positions positions={positions} currentPrice={currentPrice[0]}/>
+            }
+
+            {orderBookConnection === 'connected' ?
+                orderBook !== null && <OrderBook {...orderBook} currency={currency}/>
+                :
+                <>order book loading</>
+            }
+
         </div>
     );
 }

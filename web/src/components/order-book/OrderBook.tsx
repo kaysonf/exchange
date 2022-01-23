@@ -1,5 +1,5 @@
 import React, {FC} from "react";
-import {OrderBookM} from "../../model/Trading";
+import {OrderBookM} from "../../../../domain/models/Trading";
 import Orders from "./Orders";
 import {Paper, TableContainer} from "@mui/material";
 
