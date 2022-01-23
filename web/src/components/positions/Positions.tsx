@@ -1,15 +1,16 @@
 import {FC} from "react";
-import {PositionM} from "../../../../domain/models/Trading";
+import {CurrencyPair, PositionM} from "../../../../domain/models/Trading";
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 
 type PositionsProps = {
     positions: PositionM[];
     currentPrice: number;
+    currency: CurrencyPair;
 }
 
 const Positions: FC<PositionsProps> = (props) => {
 
-    const {positions, currentPrice} = props;
+    const {positions, currentPrice, currency} = props;
 
     return (
         <TableContainer component={Paper}>
@@ -18,21 +19,22 @@ const Positions: FC<PositionsProps> = (props) => {
                 <TableHead>
                     <TableRow>
                         <TableCell>Pair</TableCell>
-                        <TableCell align="right">Position</TableCell>
+                        <TableCell align="right">Position ({currency.base})</TableCell>
                     </TableRow>
                 </TableHead>
 
                 <TableBody>
-                    {positions.map((pos) => (
+                    {positions.map((pos, i) => (
                         <TableRow
+                            key={i}
                             sx={{'&:last-child td, &:last-child th': {border: 0}}}
                         >
                             <TableCell component="th" scope="row">
-                                {pos.pair}
+                                {pos.pair.quote}/{pos.pair.base}
                             </TableCell>
 
                             <TableCell align="right">
-                                {(currentPrice - pos.priceAcquired) * pos.quantity}
+                                {((currentPrice - pos.spent) * pos.quantity).toFixed(2)}
                             </TableCell>
 
                         </TableRow>

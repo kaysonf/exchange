@@ -1,25 +1,37 @@
-type PricePair = [number, number];
-type CurrencyPair = [string, string];
+export type CurrencyPair = {
+    quote: string;
+    base: string;
+};
+
+export type OrderType = 'buy' | 'sell';
 
 export type Order = {
     price: number;
     volume: number;
 }
 
+export type OrderTicket = Order & {
+    type: OrderType;
+}
+
 export type OrderBookM = { // rt
     asks: Order[];
     bids: Order[];
-    timestamp: number; //FIXME: date
+    timestamp: Date;
 }
 
 export type Market = { // rt
-    lastTradedPrice: PricePair;
+    timestamp: Date;
+    ohlc: OHLC;
+    lastTradedPrice: number;
     volume: number;
 }
 
+export type OHLC = [number, number, number, number];
+
 export type PositionM = {
     pair: CurrencyPair;
-    priceAcquired: number;
+    spent: number;
     quantity: number
 }
 

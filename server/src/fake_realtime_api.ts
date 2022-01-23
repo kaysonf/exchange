@@ -1,29 +1,52 @@
-import {Socket} from "socket.io";
+import {Server} from "socket.io";
 import {Market, Order, OrderBookM} from "../../domain/models/Trading";
+import {generateRandomOHLC, maxPriceETH_USDC, minPriceETH_USDC, randomNumberBetween} from "./faker_functions";
 
-const randomNumberBetween = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
+const mockSortedOrderBookData = (): OrderBookM => {
 
-const generateRandomOrderBookData = (): OrderBookM => {
+    const startFromPrice = randomNumberBetween(minPriceETH_USDC, maxPriceETH_USDC);
 
-    const generateRandomOrder = (orderSize: number): Order[] => [...Array(orderSize)].map(o => ({
-        price: randomNumberBetween(5000, 6000), volume: randomNumberBetween(10, 100)
-    }));
+    const generateSortedOrder = (orderSize: number): {orders: Order[], maxPrice: number, minPrice: number} =>
+        [...Array(orderSize)].reduce((curr, _) => {
+
+            const orders = [...curr.orders];
+            const newPrice = randomNumberBetween(curr.minPrice, curr.maxPrice);
+            const newMinPrice = newPrice;
+
+            orders.push({price: newPrice, volume: randomNumberBetween(10, 15)})
+
+            return {
+                orders: orders,
+                maxPrice: curr.maxPrice,
+                minPrice: newMinPrice
+            }
+
+        }, {orders: [] as Order[], maxPrice: maxPriceETH_USDC, minPrice: startFromPrice});
+
+    const asks = generateSortedOrder(5).orders;
+    const bids = generateSortedOrder(5).orders.reverse().map(_ => _);
 
     return {
-        asks: generateRandomOrder(10),
-        bids: generateRandomOrder(10),
-        timestamp: new Date().getTime()
+        asks,
+        bids,
+        timestamp: new Date()
     }
 }
 
 const generateRandomMarketData = (): Market => {
     return {
-        lastTradedPrice: [randomNumberBetween(5000, 6000), randomNumberBetween(5000, 600)],
-        volume: randomNumberBetween(10, 100)
+        timestamp: new Date(),
+        lastTradedPrice: randomNumberBetween(minPriceETH_USDC, maxPriceETH_USDC),
+        volume: randomNumberBetween(10, 100),
+        ohlc: generateRandomOHLC(),
     }
 }
 
+// arbitrary
+const ORDER_BOOK_RT_INTERVAL = 1000;
+const MARKET_RT_INTERVAL = 1000;
+
 export default {
-    orderBook: (socket: Socket) => setInterval(() => socket.emit('order_book', generateRandomOrderBookData()), 500),
-    market: (socket: Socket) => setInterval(() => socket.emit('market', generateRandomMarketData()), 750),
+    initOrderBookData: (server: Server) => setInterval(() => server.emit('order_book', mockSortedOrderBookData()), ORDER_BOOK_RT_INTERVAL),
+    initMarketData: (server: Server) => setInterval(() => server.emit('market', generateRandomMarketData()), MARKET_RT_INTERVAL),
 }

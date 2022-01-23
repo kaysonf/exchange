@@ -1,10 +1,10 @@
 import React, {FC} from "react";
-import {OrderBookM} from "../../../../domain/models/Trading";
+import {CurrencyPair, OrderBookM} from "../../../../domain/models/Trading";
 import Orders from "./Orders";
 import {Paper, TableContainer} from "@mui/material";
 
 type OrderBookProps = OrderBookM & {
-    currency: string;
+    currency: CurrencyPair;
 };
 
 const OrderBook: FC<OrderBookProps> = (props) => {

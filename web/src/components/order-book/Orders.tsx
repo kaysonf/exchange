@@ -1,11 +1,11 @@
 import React, {FC} from "react";
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
-import {Order} from "../../../../domain/models/Trading";
+import {CurrencyPair, Order} from "../../../../domain/models/Trading";
 
 type OrdersProps = {
     type: 'ask' | 'bid';
     orders: Order[];
-    currency: string;
+    currency: CurrencyPair;
 }
 
 const Orders: FC<OrdersProps> = (props) => {
@@ -19,17 +19,18 @@ const Orders: FC<OrdersProps> = (props) => {
 
                 <TableHead>
                     <TableRow>
-                        <TableCell>Price</TableCell>
+                        <TableCell>Price ({currency.base})</TableCell>
 
                         <TableCell align="right">Quantity</TableCell>
 
-                        <TableCell align="right">Total ({currency})</TableCell>
+                        <TableCell align="right">Total ({currency.base})</TableCell>
                     </TableRow>
                 </TableHead>
 
                 <TableBody>
-                    {orders.map((order) => (
+                    {orders.map((order, i) => (
                         <TableRow
+                            key={i}
                             sx={{'&:last-child td, &:last-child th': {border: 0}}}
                         >
                             <TableCell component="th" scope="row">
@@ -38,7 +39,7 @@ const Orders: FC<OrdersProps> = (props) => {
 
                             <TableCell align="right">{order.volume}</TableCell>
 
-                            <TableCell align="right">{order.price * order.volume}</TableCell>
+                            <TableCell align="right">{(order.price * order.volume).toFixed(2)}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
