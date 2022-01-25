@@ -3,6 +3,10 @@ import {OHLC} from "../../../../domain/models/Trading";
 
 import {VictoryAxis, VictoryCandlestick, VictoryChart, VictoryTheme} from 'victory';
 import {useMarketDataApi} from "../../API";
+import styled from "styled-components";
+import {Typography} from "@mui/material";
+
+const StyledChart = styled.div``;
 
 type CandleStick = { x: Date, open: number, high: number, close: number, low: number };
 
@@ -38,7 +42,7 @@ const candleStickReducer = (series: CandleStick[], action: Action) => {
 
 const MarketChart: FC<MarketChartProps> = ({tick}) => {
 
-    const [,requestHistoricalMarketData] = useMarketDataApi();
+    const [, requestHistoricalMarketData] = useMarketDataApi();
 
     const [dataPoints, dispatch] = useReducer(candleStickReducer, [] as CandleStick[])
 
@@ -69,15 +73,19 @@ const MarketChart: FC<MarketChartProps> = ({tick}) => {
 
 
     return (
-        <>
+        <StyledChart>
+
+            <Typography variant="h3" gutterBottom component="h6">
+                Market
+            </Typography>
+
             <VictoryChart
                 theme={VictoryTheme.material}
                 domainPadding={{x: 25}}
                 scale={{x: 'time'}}
-                // height={300}
-                width={1000}
+                // height={250}
+                // width={1000}
             >
-                <VictoryAxis dependentAxis/>
                 <VictoryAxis dependentAxis/>
 
                 <VictoryCandlestick
@@ -86,7 +94,7 @@ const MarketChart: FC<MarketChartProps> = ({tick}) => {
                 />
 
             </VictoryChart>
-        </>
+        </StyledChart>
     )
 }
 

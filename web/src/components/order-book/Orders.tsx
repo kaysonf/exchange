@@ -1,11 +1,16 @@
 import React, {FC} from "react";
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
-import {CurrencyPair, Order} from "../../../../domain/models/Trading";
+import {CurrencyPair, Order, OrderType} from "../../../../domain/models/Trading";
+import {TableCellProps} from "@mui/material/TableCell/TableCell";
 
 type OrdersProps = {
-    type: 'ask' | 'bid';
+    type: OrderType;
     orders: Order[];
     currency: CurrencyPair;
+}
+
+const OrderCell: FC<TableCellProps & { type: OrderType }> = (props) => {
+    return <TableCell {...props} style={{backgroundColor: props.type === 'buy' ? '#8cdba0' : '#cf6262'}}/>;
 }
 
 const Orders: FC<OrdersProps> = (props) => {
@@ -33,13 +38,13 @@ const Orders: FC<OrdersProps> = (props) => {
                             key={i}
                             sx={{'&:last-child td, &:last-child th': {border: 0}}}
                         >
-                            <TableCell component="th" scope="row">
+                            <OrderCell component="th" scope="row" type={type}>
                                 {order.price}
-                            </TableCell>
+                            </OrderCell>
 
-                            <TableCell align="right">{order.volume}</TableCell>
+                            <OrderCell align="right" type={type}>{order.volume}</OrderCell>
 
-                            <TableCell align="right">{(order.price * order.volume).toFixed(2)}</TableCell>
+                            <OrderCell align="right" type={type}>{(order.price * order.volume).toFixed(2)}</OrderCell>
                         </TableRow>
                     ))}
                 </TableBody>

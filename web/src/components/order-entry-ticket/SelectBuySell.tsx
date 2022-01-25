@@ -6,9 +6,10 @@ import {OrderType} from "../../../../domain/models/Trading";
 
 type SelectBuySellProps = {
     onSelect: (type: OrderType) => void;
+    orderType: OrderType;
 }
 
-const SelectBuySell: FC<SelectBuySellProps> = ({onSelect}) => {
+const SelectBuySell: FC<SelectBuySellProps> = ({onSelect, orderType}) => {
 
     const [open, setOpen] = useState(false);
     const anchorRef = useRef<HTMLDivElement>(null);
@@ -43,7 +44,7 @@ const SelectBuySell: FC<SelectBuySellProps> = ({onSelect}) => {
     return (
         <>
             <ButtonGroup variant="contained" ref={anchorRef} aria-label="split button">
-                <Button disabled={true} variant={'text'}>{selectedOrderType}</Button>
+                <Button disabled={true} variant={'text'} style={{backgroundColor: orderType === 'buy' ?  '#8cdba0' : '#cf6262'}}>{selectedOrderType}</Button>
 
                 <Button
                     size="small"

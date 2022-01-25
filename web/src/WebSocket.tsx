@@ -1,10 +1,10 @@
 import {Socket} from "socket.io-client";
 import {useEffect, useState} from "react";
-import {Market, OHLC, OrderBookM} from "../../domain/models/Trading";
+import {Market, OrderBookM} from "../../domain/models/Trading";
 
 type WS_EVENT = 'order_book' | 'market';
 
-function useWebSocket<MessageType> (socket: Socket, eventName: WS_EVENT) {
+function useWebSocket<MessageType>(socket: Socket, eventName: WS_EVENT) {
     const [status, setStatus] = useState<'connected' | 'disconnected' | null>(null);
 
     const [message, setMessage] = useState<MessageType | null>(null);

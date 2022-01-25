@@ -1,6 +1,6 @@
 import {FC} from "react";
 import {CurrencyPair, PositionM} from "../../../../domain/models/Trading";
-import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
+import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from "@mui/material";
 
 type PositionsProps = {
     positions: PositionM[];
@@ -14,6 +14,11 @@ const Positions: FC<PositionsProps> = (props) => {
 
     return (
         <TableContainer component={Paper}>
+
+            <Typography variant="h3" gutterBottom component="h6">
+                Positions
+            </Typography>
+
             <Table sx={{minWidth: 650}} size="small" aria-label="a dense table">
 
                 <TableHead>
