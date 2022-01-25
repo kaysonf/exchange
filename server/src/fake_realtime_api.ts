@@ -1,10 +1,10 @@
 import {Server} from "socket.io";
 import {Market, Order, OrderBookM} from "../../domain/models/Trading";
-import {generateRandomOHLC, maxPriceETH_USDC, minPriceETH_USDC, randomNumberBetween} from "./faker_functions";
+import {generateRandomOHLC, maxPriceEthUsdc, minPriceEthUsdc, randomNumberBetween} from "./faker_functions";
 
 const mockSortedOrderBookData = (): OrderBookM => {
 
-    const startFromPrice = randomNumberBetween(minPriceETH_USDC, maxPriceETH_USDC);
+    const startFromPrice = randomNumberBetween(minPriceEthUsdc, maxPriceEthUsdc);
 
     const generateSortedOrder = (orderSize: number): {orders: Order[], maxPrice: number, minPrice: number} =>
         [...Array(orderSize)].reduce((curr, _) => {
@@ -21,7 +21,7 @@ const mockSortedOrderBookData = (): OrderBookM => {
                 minPrice: newMinPrice
             }
 
-        }, {orders: [] as Order[], maxPrice: maxPriceETH_USDC, minPrice: startFromPrice});
+        }, {orders: [] as Order[], maxPrice: maxPriceEthUsdc, minPrice: startFromPrice});
 
     const asks = generateSortedOrder(5).orders;
     const bids = generateSortedOrder(5).orders.reverse().map(_ => _);
@@ -36,7 +36,7 @@ const mockSortedOrderBookData = (): OrderBookM => {
 const generateRandomMarketData = (): Market => {
     return {
         timestamp: new Date(),
-        lastTradedPrice: randomNumberBetween(minPriceETH_USDC, maxPriceETH_USDC),
+        lastTradedPrice: randomNumberBetween(minPriceEthUsdc, maxPriceEthUsdc),
         volume: randomNumberBetween(10, 100),
         ohlc: generateRandomOHLC(),
     }

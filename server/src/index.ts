@@ -13,7 +13,7 @@ app.use(express.json());
 import http from 'http';
 const server = http.createServer(app);
 import { Server } from 'socket.io'
-import {generateRandomOHLC, maxPriceETH_USDC, minPriceETH_USDC, randomNumberBetween} from "./faker_functions";
+import {generateRandomOHLC, maxPriceEthUsdc, minPriceEthUsdc, randomNumberBetween} from "./faker_functions";
 const io = new Server(server, {
     cors: {
         origin: "*",
@@ -43,7 +43,7 @@ app.get('/api/market', (req, res) => {
 
         return {
             timestamp: new Date(refDate.getSeconds() - (50 - i) * 1000),
-            lastTradedPrice: randomNumberBetween(minPriceETH_USDC, maxPriceETH_USDC),
+            lastTradedPrice: randomNumberBetween(minPriceEthUsdc, maxPriceEthUsdc),
             volume: randomNumberBetween(10, 100),
             ohlc: generateRandomOHLC(),
         }

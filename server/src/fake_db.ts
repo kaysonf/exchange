@@ -4,16 +4,16 @@ const positions: PositionM[] = [];
 
 const updateCurrentPosition = (orderTicket: OrderTicket): Promise<OrderTicket> => {
     return new Promise<OrderTicket>((resolve, reject) => {
-        const ETH_USDC = positions[0];
+        const ethUsdc = positions[0];
 
         // since this is just a mock, no need to check and match pricing...
         switch (orderTicket.type) {
             case 'buy':
-                ETH_USDC.spent += orderTicket.volume * orderTicket.price;
+                ethUsdc.spent += orderTicket.volume * orderTicket.price;
                 break;
             case 'sell': {
-                if (ETH_USDC.quantity >= orderTicket.volume) {
-                    ETH_USDC.spent -= orderTicket.volume * orderTicket.price;
+                if (ethUsdc.quantity >= orderTicket.volume) {
+                    ethUsdc.spent -= orderTicket.volume * orderTicket.price;
                 } else {
                     return reject('not enough qty');
                 }
@@ -21,9 +21,9 @@ const updateCurrentPosition = (orderTicket: OrderTicket): Promise<OrderTicket> =
             }
         }
 
-        ETH_USDC.quantity += orderTicket.volume;
+        ethUsdc.quantity += orderTicket.volume;
 
-        positions[0] = ETH_USDC;
+        positions[0] = ethUsdc;
 
         return resolve(orderTicket);
     });

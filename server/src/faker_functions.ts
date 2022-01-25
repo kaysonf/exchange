@@ -1,7 +1,7 @@
 import {OHLC} from "../../domain/models/Trading";
 
-export const minPriceETH_USDC = 5120;
-export const maxPriceETH_USDC = 5130;
+export const minPriceEthUsdc = 5120;
+export const maxPriceEthUsdc = 5130;
 
 export const randomNumberBetween = (min: number, max: number) => {
     const r = Math.random() * (max - min + 1) + min;
@@ -10,7 +10,7 @@ export const randomNumberBetween = (min: number, max: number) => {
 
 export const generateRandomOHLC = (): OHLC => {
 
-    const open = randomNumberBetween(minPriceETH_USDC, maxPriceETH_USDC);
+    const open = randomNumberBetween(minPriceEthUsdc, maxPriceEthUsdc);
     const high = randomNumberBetween(open, open + 5);
     const low = randomNumberBetween(open - 5, open);
     const close = randomNumberBetween(low, high);
